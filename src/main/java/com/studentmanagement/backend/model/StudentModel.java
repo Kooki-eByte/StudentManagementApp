@@ -1,6 +1,7 @@
 package com.studentmanagement.backend.model;
 
 import javax.persistence.*;
+import java.util.UUID;
 
 @Table(name = "student", uniqueConstraints = {
         @UniqueConstraint(name = "student_unique_email", columnNames = "email")
@@ -30,7 +31,7 @@ public class StudentModel {
     private Integer age;
 
     @Column(nullable = false)
-    private String studentCode;
+    private UUID studentCode;
 
     public StudentModel() {
     }
@@ -82,11 +83,11 @@ public class StudentModel {
         this.age = age;
     }
 
-    public String getStudentCode() {
+    public UUID getStudentCode() {
         return studentCode;
     }
 
-    public void setStudentCode(String studentCode) {
+    public void setStudentCode(UUID studentCode) {
         this.studentCode = studentCode;
     }
 

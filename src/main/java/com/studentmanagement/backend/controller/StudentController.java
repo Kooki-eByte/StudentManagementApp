@@ -3,9 +3,7 @@ package com.studentmanagement.backend.controller;
 import com.studentmanagement.backend.model.StudentModel;
 import com.studentmanagement.backend.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -24,6 +22,11 @@ public class StudentController {
     @GetMapping("all")
     public List<StudentModel> getAllStudents() {
         return studentService.getAllStudents();
+    }
+
+    @PostMapping
+    public void addNewStudent(@RequestBody StudentModel student){
+        studentService.addNewStudent(student);
     }
 
 }
