@@ -1,8 +1,12 @@
 package com.studentmanagement.backend.model;
 
+import com.studentmanagement.backend.enums.Gender;
+import lombok.EqualsAndHashCode;
+
 import javax.persistence.*;
 import java.util.UUID;
 
+@EqualsAndHashCode
 @Table(name = "student", uniqueConstraints = {
         @UniqueConstraint(name = "student_unique_email", columnNames = "email")
 })
@@ -28,7 +32,7 @@ public class StudentModel {
     private String email;
 
     @Column(nullable = false)
-    private Integer age;
+    private Gender gender;
 
     @Column(nullable = false)
     private UUID studentCode;
@@ -36,11 +40,11 @@ public class StudentModel {
     public StudentModel() {
     }
 
-    public StudentModel(String firstName, String lastName, String email, Integer age) {
+    public StudentModel(String firstName, String lastName, String email, Gender gender) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-        this.age = age;
+        this.gender = gender;
     }
 
     public Long getId() {
@@ -67,20 +71,20 @@ public class StudentModel {
         this.lastName = lastName;
     }
 
+    public Gender getGender() {
+        return gender;
+    }
+
+    public void setGender(Gender gender) {
+        this.gender = gender;
+    }
+
     public String getEmail() {
         return email;
     }
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public Integer getAge() {
-        return age;
-    }
-
-    public void setAge(Integer age) {
-        this.age = age;
     }
 
     public UUID getStudentCode() {
@@ -98,7 +102,7 @@ public class StudentModel {
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
-                ", age=" + age +
+                ", gender=" + gender +
                 ", studentCode=" + studentCode +
                 '}';
     }
