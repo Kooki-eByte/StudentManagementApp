@@ -27,6 +27,6 @@ public class StudentService {
     public void addNewStudent(StudentModel student) {
         student.setStudentCode(UUID.randomUUID());
         studentRepository.save(student);
-        log.info("Student is saved with id of {}", student.getId());
+//        log.info("Student is saved with id of {}", student.getId());
     }
 }
