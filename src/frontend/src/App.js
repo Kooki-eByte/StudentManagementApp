@@ -9,12 +9,15 @@ import { Breadcrumb, Layout, Menu } from "antd";
 import "antd/dist/antd.css";
 import { useState } from "react";
 import "./App.css";
+import { getAllStudents } from "./routes/studentAPI";
 
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
 
 function App() {
   const [collapsed, setCollapse] = useState(false);
+
+  getAllStudents().then((data) => console.log(data));
 
   return (
     <div className="App">
@@ -58,9 +61,7 @@ function App() {
             <div
               className="site-layout-background"
               style={{ padding: 24, minHeight: 360 }}
-            >
-              Bill is a cat.
-            </div>
+            ></div>
           </Content>
           <Footer style={{ textAlign: "center" }}>
             Student Management App ©2021 Created by Cristian Hornedo
