@@ -5,48 +5,50 @@ import {
   TeamOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import { Breadcrumb, Button, Layout, Menu } from "antd";
+import { Breadcrumb, Button, Empty, Layout, Menu, Table } from "antd";
 import "antd/dist/antd.css";
 import { useEffect, useState } from "react";
 import "./App.css";
 import { createStudent, getAllStudents } from "./routes/studentAPI";
+const columns = require("./components/tableColumns.json");
+const listOfStudents = require("./components/listOfMockStudents.json");
 
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
 
-const listOfStudents = [
-  {
-    firstName: "Jane",
-    lastName: "Doe",
-    email: "jane.doe@gmail.com",
-    gender: "FEMALE",
-  },
-  {
-    firstName: "Joe",
-    lastName: "Doe",
-    email: "joe.doe@gmail.com",
-    gender: "MALE",
-  },
-  {
-    firstName: "test",
-    lastName: "test",
-    email: "test.test@gmail.com",
-    gender: "OTHER",
-  },
-];
-
 function App() {
   const [collapsed, setCollapse] = useState(false);
   const [students, setStudents] = useState([]);
+  const [fetching, setFetching] = useState(true);
 
   const fetchStudents = () => {
-    getAllStudents().then((data) => setStudents(data));
+    setFetching(true);
+    getAllStudents()
+      .then((data) => setStudents(data))
+      .then(() => setFetching(false));
   };
 
   const makeNewStudent = async () => {
-    let randomNum = Math.floor(Math.random() * (2 - 0 + 1) + 0);
+    let randomNum = Math.floor(
+      Math.random() * (listOfStudents.length - 0 + 1) + 0
+    );
     await createStudent(listOfStudents[randomNum]);
     getAllStudents().then((data) => setStudents(data));
+  };
+
+  const renderStudents = () => {
+    return students.length >= 0 ? (
+      <Table
+        dataSource={students}
+        columns={columns}
+        bordered
+        title={() => "Students"}
+        loading={fetching}
+        rowKey={(student) => student.id}
+      />
+    ) : (
+      <Empty />
+    );
   };
 
   useEffect(() => {
@@ -104,18 +106,7 @@ function App() {
                 Create New student
               </Button>
               <br />
-              {students.length >= 0 ? (
-                students.map((student, idx) => (
-                  <div key={idx}>
-                    <h2>{`${student.firstName} ${student.lastName}`}</h2>
-                    <h3>{student.gender}</h3>
-                    <p>{student.studentCode}</p>
-                    <p>{student.email}</p>
-                  </div>
-                ))
-              ) : (
-                <h2>No Data Found...</h2>
-              )}
+              {renderStudents()}
             </div>
           </Content>
           <Footer style={{ textAlign: "center" }}>
