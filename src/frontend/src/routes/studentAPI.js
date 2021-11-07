@@ -4,10 +4,9 @@ export async function getAllStudents() {
 }
 
 export async function createStudent(data) {
-  const response = await fetch(`/api/v1/student/add`, {
+  await fetch(`/api/v1/student/add`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
   });
-  return await response.json();
 }

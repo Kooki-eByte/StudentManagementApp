@@ -5,19 +5,57 @@ import {
   TeamOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import { Breadcrumb, Layout, Menu } from "antd";
+import { Breadcrumb, Button, Layout, Menu } from "antd";
 import "antd/dist/antd.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
-import { getAllStudents } from "./routes/studentAPI";
+import { createStudent, getAllStudents } from "./routes/studentAPI";
 
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
 
+const listOfStudents = [
+  {
+    firstName: "Jane",
+    lastName: "Doe",
+    email: "jane.doe@gmail.com",
+    gender: "FEMALE",
+  },
+  {
+    firstName: "Joe",
+    lastName: "Doe",
+    email: "joe.doe@gmail.com",
+    gender: "MALE",
+  },
+  {
+    firstName: "test",
+    lastName: "test",
+    email: "test.test@gmail.com",
+    gender: "OTHER",
+  },
+];
+
 function App() {
   const [collapsed, setCollapse] = useState(false);
+  const [students, setStudents] = useState([]);
 
-  getAllStudents().then((data) => console.log(data));
+  const fetchStudents = () => {
+    getAllStudents().then((data) => setStudents(data));
+  };
+
+  const makeNewStudent = async () => {
+    let randomNum = Math.floor(Math.random() * (2 - 0 + 1) + 0);
+    await createStudent(listOfStudents[randomNum]);
+    getAllStudents().then((data) => setStudents(data));
+  };
+
+  useEffect(() => {
+    fetchStudents();
+  }, []);
+
+  useEffect(() => {
+    console.log(students);
+  }, [students]);
 
   return (
     <div className="App">
@@ -55,13 +93,30 @@ function App() {
           </Header>
           <Content style={{ margin: "0 16px" }}>
             <Breadcrumb style={{ margin: "16px 0" }}>
-              <Breadcrumb.Item>User</Breadcrumb.Item>
-              <Breadcrumb.Item>Bill</Breadcrumb.Item>
+              <Breadcrumb.Item>Management</Breadcrumb.Item>
+              <Breadcrumb.Item>Students</Breadcrumb.Item>
             </Breadcrumb>
             <div
               className="site-layout-background"
               style={{ padding: 24, minHeight: 360 }}
-            ></div>
+            >
+              <Button onClick={() => makeNewStudent()}>
+                Create New student
+              </Button>
+              <br />
+              {students.length >= 0 ? (
+                students.map((student, idx) => (
+                  <div key={idx}>
+                    <h2>{`${student.firstName} ${student.lastName}`}</h2>
+                    <h3>{student.gender}</h3>
+                    <p>{student.studentCode}</p>
+                    <p>{student.email}</p>
+                  </div>
+                ))
+              ) : (
+                <h2>No Data Found...</h2>
+              )}
+            </div>
           </Content>
           <Footer style={{ textAlign: "center" }}>
             Student Management App ©2021 Created by Cristian Hornedo
